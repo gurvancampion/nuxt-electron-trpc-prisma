@@ -26,21 +26,23 @@ pnpm install --shamefully-hoist
 Start the development server on http://localhost:3000
 
 ```bash
-npm run dev
+pnpm prisma migrate dev --name init
+pnpm prisma generate
+pnpm run dev
 ```
 
 ## Production
 
 Build the application for production:
 
+Currently doesn't work yet, figuring out how to build the app with Nuxt 3
+
 ```bash
-npm run build
+
+```bash
+pnpm run build
 ```
 
-Locally preview production build:
-
-```bash
-npm run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

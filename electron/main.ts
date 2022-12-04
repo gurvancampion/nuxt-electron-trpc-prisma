@@ -10,7 +10,7 @@ import type { IpcRequest } from '~~/types/Ipc'
 process.env.ROOT = path.join(__dirname, '..')
 process.env.DIST = path.join(process.env.ROOT)
 process.env.VITE_PUBLIC = app.isPackaged
-  ? path.join(process.env.ROOT, '../dist')
+  ? path.join(process.env.ROOT, '../.output/public')
   : path.join(process.env.ROOT, 'public')
 // Remove electron security warnings only in development mode
 // Read more on https://www.electronjs.org/docs/latest/tutorial/securit
@@ -46,6 +46,7 @@ async function createWindow() {
   })
 
   if (app.isPackaged) {
+    // win.loadURL(`file://${path.join(process.env.VITE_PUBLIC!, 'index.html')}`)
     win.loadFile(path.join(process.env.VITE_PUBLIC!, 'index.html'))
   }
   else {
@@ -92,9 +93,6 @@ app.whenReady().then(() => {
       endpoint: '/trpc',
       req,
       router: appRouter,
-      createContext: async () => {
-        return {}
-      },
     })
   })
   createWindow()
