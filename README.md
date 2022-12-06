@@ -33,16 +33,12 @@ pnpm run dev
 
 ## Production
 
-Build the application for production:
+Build the application for production and package it with electron-builder
 
-Currently doesn't work yet, figuring out how to build the app with Nuxt 3
-
-```bash
+Currently it doesn't work yet, figuring out how the problem of paths after build
 
 ```bash
 pnpm run build
-```
-
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

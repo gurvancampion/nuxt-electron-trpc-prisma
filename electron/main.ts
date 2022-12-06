@@ -1,5 +1,6 @@
 import { release } from 'os'
 import path from 'path'
+import fs from 'fs'
 import { BrowserWindow, app, ipcMain, shell } from 'electron'
 import { SerialPort } from 'serialport'
 // Use relative path to avoid issues
@@ -95,5 +96,12 @@ app.whenReady().then(() => {
       router: appRouter,
     })
   })
+
+  if (app.isPackaged) {
+    const hasDb = fs.existsSync(`file:${path.join(app.getPath('userData'), 'dev.db')}`)
+    if (!hasDb)
+      fs.copyFileSync(path.join(process.resourcesPath, 'server/prisma/dev.db'), path.join(app.getPath('userData'), 'dev.db'))
+  }
+
   createWindow()
 })

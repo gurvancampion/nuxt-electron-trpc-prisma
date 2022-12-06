@@ -6,7 +6,10 @@
   "scripts": {
     "postinstall": "prisma generate & nuxt prepare",
     "dev": "nuxi dev",
+    "generate": "nuxi generate",
     "build": "nuxi generate && electron-builder",
+    "preview": "nuxi preview",
+    "pack": "electron-builder",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

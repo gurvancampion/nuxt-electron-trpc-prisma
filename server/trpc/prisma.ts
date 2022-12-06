@@ -13,17 +13,22 @@ declare global {
   var prisma: PrismaClient
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const isProduction = app.isPackaged
 const dbPath
-  = process.env.NODE_ENV === 'development'
-    ? path.join(__dirname, process.env.DATABASE_URL!)
-    : path.join(app.getPath('userData'), 'app.db')
+  = isProduction
+    ? `file:${path.join(app.getPath('userData'), 'app.db')}`
+    : process.env.DATABASE_URL
 
 export const prisma = global.prisma ?? new PrismaClient({
-  log: process.env.NODE_ENV === 'development'
-    ? ['query', 'info', 'error', 'warn']
-    : ['error'],
+  log: isProduction
+    ? ['error']
+    : ['query', 'info', 'error', 'warn'],
+  datasources: {
+    db: {
+      url: dbPath,
+    },
+  },
 })
 
-if (process.env.NODE_ENV !== 'production')
+if (!isProduction)
   global.prisma = prisma

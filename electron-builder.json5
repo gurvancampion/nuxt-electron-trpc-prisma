@@ -6,7 +6,8 @@
   "asar": true,
   "extraResources": [
     "node_modules/.prisma/**/*",
-    "node_modules/@prisma/client/**/*"
+    "node_modules/@prisma/client/**/*",
+    "server/prisma/app.db"
   ],
   "directories": {
     "output": "release/${version}"
@@ -26,7 +27,8 @@
       {
         "target": "nsis",
         "arch": [
-          "x64"
+          "x64", // Windows 64-bit
+          "ia32" // Windows 32-bit
         ]
       }
     ],
