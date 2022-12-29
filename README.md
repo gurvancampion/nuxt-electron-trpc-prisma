@@ -4,9 +4,7 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 
 ## Setup
 
-Create an `.env` file `cp .env.example .env`
-
-```bash 
+Create a `.env` file `cp .env.example .env`
 
 Make sure to install the dependencies:
 
@@ -26,7 +24,7 @@ pnpm install --shamefully-hoist
 Start the development server on http://localhost:3000
 
 ```bash
-pnpm prisma migrate dev --name init
+pnpm prisma migrate dev
 pnpm prisma generate
 pnpm run dev
 ```
@@ -34,8 +32,6 @@ pnpm run dev
 ## Production
 
 Build the application for production and package it with electron-builder
-
-Currently it doesn't work yet, figuring out how the problem of paths after build
 
 ```bash
 pnpm run build

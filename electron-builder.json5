@@ -26,10 +26,7 @@
     "target": [
       {
         "target": "nsis",
-        "arch": [
-          "x64", // Windows 64-bit
-          "ia32" // Windows 32-bit
-        ]
+        "arch": ["x64"]
       }
     ],
     "artifactName": "${productName}_${version}.${ext}"

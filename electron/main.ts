@@ -2,17 +2,11 @@ import { release } from 'os'
 import path from 'path'
 import fs from 'fs'
 import { BrowserWindow, app, ipcMain, shell } from 'electron'
-import { SerialPort } from 'serialport'
 // Use relative path to avoid issues
 import ipcRequestHandler from '../server/trpc/ipcRequestHandler'
 import { appRouter } from '../server/trpc/routers'
-import type { IpcRequest } from '~~/types/Ipc'
+import type { IpcRequest } from '~/types/Ipc'
 
-process.env.ROOT = path.join(__dirname, '..')
-process.env.DIST = path.join(process.env.ROOT)
-process.env.VITE_PUBLIC = app.isPackaged
-  ? path.join(process.env.ROOT, '../.output/public')
-  : path.join(process.env.ROOT, 'public')
 // Remove electron security warnings only in development mode
 // Read more on https://www.electronjs.org/docs/latest/tutorial/securit
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
@@ -32,7 +26,8 @@ if (!app.requestSingleInstanceLock()) {
 
 let win: BrowserWindow | null = null
 
-const preload = path.join(process.env.DIST, 'electron/preload.js')
+const preload = path.join(__dirname, 'preload.js')
+const distPath = path.join(__dirname, '../../.output/public')
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -47,8 +42,7 @@ async function createWindow() {
   })
 
   if (app.isPackaged) {
-    // win.loadURL(`file://${path.join(process.env.VITE_PUBLIC!, 'index.html')}`)
-    win.loadFile(path.join(process.env.VITE_PUBLIC!, 'index.html'))
+    win.loadFile(path.join(distPath, 'index.html'))
   }
   else {
     win.loadURL(process.env.VITE_DEV_SERVER_URL!)
@@ -88,7 +82,6 @@ app.on('activate', () => {
 })
 
 app.whenReady().then(() => {
-  ipcMain.handle('serialport:list', () => SerialPort.list())
   ipcMain.handle('trpc', (event, req: IpcRequest) => {
     return ipcRequestHandler({
       endpoint: '/trpc',
@@ -98,9 +91,10 @@ app.whenReady().then(() => {
   })
 
   if (app.isPackaged) {
-    const hasDb = fs.existsSync(`file:${path.join(app.getPath('userData'), 'dev.db')}`)
+    const hasDb = fs.existsSync(`file:${path.join(app.getPath('userData'), 'app.db')}`)
+    // TODO: Run new migrations at startup
     if (!hasDb)
-      fs.copyFileSync(path.join(process.resourcesPath, 'server/prisma/dev.db'), path.join(app.getPath('userData'), 'dev.db'))
+      fs.copyFileSync(path.join(process.resourcesPath, 'server/prisma/app.db'), path.join(app.getPath('userData'), 'app.db'))
   }
 
   createWindow()

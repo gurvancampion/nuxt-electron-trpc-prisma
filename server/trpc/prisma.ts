@@ -1,11 +1,9 @@
 import path from 'path'
 import { PrismaClient } from '@prisma/client'
 import { app } from 'electron'
-// // need to import something from "electron" to add electron-specific types to `process`
-// import type { } from "electron"
-// https://www.electronjs.org/docs/latest/api/process
-// https://www.prisma.io/docs/guides/performance-and-optimization/connection-management#prevent-hot-reloading-from-creating-new-instances-of-prismaclient
+
 // Prevent multiple instances of Prisma Client in development
+// https://www.prisma.io/docs/guides/performance-and-optimization/connection-management#prevent-hot-reloading-from-creating-new-instances-of-prismaclient
 // Add prisma to the global type
 declare global {
   // Must use var, not let or const: https://stackoverflow.com/questions/35074713/extending-typescript-global-object-in-node-js/68328575#68328575

@@ -1,13 +1,21 @@
 import vuetify from 'vite-plugin-vuetify'
-import { withElectron } from 'nuxt-plugin-electron'
+import type { ElectronOptions } from 'nuxt-electron'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
-const nuxtConfig = defineNuxtConfig({
+export default defineNuxtConfig({
   ssr: false,
+  router: {
+    options: {
+      hashMode: true,
+    },
+  },
   vite: {
     server: {
       middlewareMode: false,
     },
+  },
+  app: {
+    baseURL: './',
   },
   modules: [
     async (options, nuxt) => {
@@ -16,12 +24,20 @@ const nuxtConfig = defineNuxtConfig({
         vuetify(),
       ))
     },
+    ['nuxt-electron', <ElectronOptions>{
+      include: ['electron', 'server'],
+    }],
   ],
-  build: {
-    transpile: ['vuetify'],
+  hooks: {
+    // Remove aliases to only have one
+    // https://github.com/nuxt/framework/issues/7277
+    'prepare:types': function ({ tsConfig }) {
+      const aliasesToRemoveFromAutocomplete = ['~~', '~~/*', '@', '@/*', '@@', '@@/*']
+      for (const alias of aliasesToRemoveFromAutocomplete) {
+        if (tsConfig.compilerOptions!.paths[alias])
+          delete tsConfig.compilerOptions!.paths[alias]
+      }
+    },
   },
 })
 
-export default withElectron({
-  include: ['electron', 'server'],
-})(nuxtConfig)
