@@ -39,3 +39,5 @@ pnpm run build
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
+## Credits
+- https://github.com/awohletz/electron-prisma-trpc-example
