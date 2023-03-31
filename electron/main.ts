@@ -91,7 +91,7 @@ app.whenReady().then(() => {
   })
 
   if (app.isPackaged) {
-    const hasDb = fs.existsSync(`file:${path.join(app.getPath('userData'), 'app.db')}`)
+    const hasDb = fs.existsSync(`${path.join(app.getPath('userData'), 'app.db')}`)
     // TODO: Run new migrations at startup
     if (!hasDb)
       fs.copyFileSync(path.join(process.resourcesPath, 'server/prisma/app.db'), path.join(app.getPath('userData'), 'app.db'))
