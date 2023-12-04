@@ -2,7 +2,7 @@
   "name": "nuxt-electron-prisma-trpc",
   "version": "0.0.1",
   "private": true,
-  "main": "dist-electron/electron/main.js",
+  "main": "dist-electron/main.js",
   "scripts": {
     "postinstall": "prisma generate & nuxt prepare",
     "dev": "nuxt dev",
@@ -22,11 +22,11 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.33.1",
-    "electron": "^22.0.0",
-    "electron-builder": "^23.6.0",
+    "electron": "27.1.3",
+    "electron-builder": "24.6.4",
     "eslint": "^8.29.0",
-    "nuxt": "3.0.0",
-    "nuxt-electron": "^0.2.0",
+    "nuxt": "3.8.0",
+    "nuxt-electron": "0.6.0",
     "prisma": "4.7.1",
     "typescript": "^4.9.3",
     "vite-plugin-vuetify": "^1.0.1"

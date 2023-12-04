@@ -1,4 +1,4 @@
 {
   "extends": "@antfu",
-  "ignorePatterns": ["dist-electron"]
+  "ignorePatterns": ["dist-electron", "release"]
 }

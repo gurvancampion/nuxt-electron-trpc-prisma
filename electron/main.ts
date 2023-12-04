@@ -27,7 +27,7 @@ if (!app.requestSingleInstanceLock()) {
 let win: BrowserWindow | null = null
 
 const preload = path.join(__dirname, 'preload.js')
-const distPath = path.join(__dirname, '../../.output/public')
+const distPath = path.join(__dirname, '../.output/public')
 
 async function createWindow() {
   win = new BrowserWindow({

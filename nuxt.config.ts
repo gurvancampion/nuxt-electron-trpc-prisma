@@ -1,43 +1,56 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
 import vuetify from 'vite-plugin-vuetify'
-import type { ElectronOptions } from 'nuxt-electron'
+import pkg from './package.json'
+
+fs.rmSync(path.join(__dirname, 'dist-electron'), { recursive: true, force: true })
+
+const viteElectronBuildConfig = {
+  build: {
+    minify: process.env.NODE_ENV === 'production',
+    rollupOptions: {
+      external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
+    },
+  },
+  resolve: {
+    alias: {
+      '~': __dirname,
+    },
+  },
+}
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
-  router: {
-    options: {
-      hashMode: true,
-    },
-  },
-  vite: {
-    server: {
-      middlewareMode: false,
-    },
-  },
-  app: {
-    baseURL: './',
+  experimental: {
+    appManifest: false,
   },
   modules: [
+    'nuxt-electron',
     async (options, nuxt) => {
       // @ts-expect-error: remove ts error
       nuxt.hooks.hook('vite:extendConfig', config => config.plugins.push(
         vuetify(),
       ))
     },
-    ['nuxt-electron', <ElectronOptions>{
-      include: ['electron', 'server'],
-    }],
   ],
-  hooks: {
-    // Remove aliases to only have one
-    // https://github.com/nuxt/framework/issues/7277
-    'prepare:types': function ({ tsConfig }) {
-      const aliasesToRemoveFromAutocomplete = ['~~', '~~/*', '@', '@/*', '@@', '@@/*']
-      for (const alias of aliasesToRemoveFromAutocomplete) {
-        if (tsConfig.compilerOptions!.paths[alias])
-          delete tsConfig.compilerOptions!.paths[alias]
-      }
-    },
+  electron: {
+    build: [
+      {
+        entry: 'electron/main.ts',
+        vite: viteElectronBuildConfig,
+      },
+      {
+        entry: 'electron/preload.ts',
+        onstart(options) {
+          // Notify the renderer process to reload the page when the preload-script is completely loaded
+          // Instead of restarting the entire electron app
+          options.reload()
+        },
+        vite: viteElectronBuildConfig,
+      },
+    ],
   },
 })
 
