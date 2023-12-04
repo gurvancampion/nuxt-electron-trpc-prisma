@@ -29,6 +29,7 @@
     "nuxt-electron": "0.6.0",
     "prisma": "4.7.1",
     "typescript": "^4.9.3",
+    "vite-plugin-electron": "^0.15.4",
     "vite-plugin-vuetify": "^1.0.1"
   },
   "prisma": {

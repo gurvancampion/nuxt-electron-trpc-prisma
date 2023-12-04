@@ -46,6 +46,9 @@ devDependencies:
   typescript:
     specifier: ^4.9.3
     version: 4.9.5
+  vite-plugin-electron:
+    specifier: ^0.15.4
+    version: 0.15.4
   vite-plugin-vuetify:
     specifier: ^1.0.1
     version: 1.0.2(vite@4.5.1)(vue@3.3.9)(vuetify@3.4.4)
